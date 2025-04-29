@@ -1,0 +1,164 @@
+Deploying WordPress with MySQL on a Single EC2 Instance (Monolithic Architecture)
+
+
+
+Step 1: Launch an EC2 Instance
+1. Instance Type: Choose the `t2.micro
+2. AMI: Select an Ubuntu AMI
+3. Security Group Configuration:
+   - SSH (Port 22): Allow SSH access to the EC2 instance.
+   - HTTP (Port 80): Allow HTTP traffic to the Apache web server.
+   - HTTPS (Port 443): Allow HTTPS traffic if using SSL.
+   - MySQL (Port 3306): Allow MySQL access (for local server communication only).
+
+Once the instance is launched, connect to it using your SSH key pair and the public IP address of your EC2 instance.
+
+
+
+Step 2: Connect to the EC2 Instance
+After the EC2 instance is running, connect to it via SSH.
+
+Use the following command in your terminal to connect to the instance using gitbash
+
+ssh -i keyname ubuntu@<instance_public_ip> 
+
+Replace `<instance_public_ip>` with the public IP of your EC2 instance and keyname with selected keyname.
+
+
+
+Step 3: Install Required Packages
+Once connected to the EC2 instance, update and install the required packages.
+
+1. Update the System:
+   sudo apt update
+   sudo apt upgrade -y
+   
+
+2. Install Apache Web Server
+   sudo apt install apache2 -y
+   
+
+3. Install PHP and PHP extensions (required for WordPress):
+   sudo apt install php libapache2-mod-php php-mysql -y
+   
+
+4. Install MySQL Server (for WordPress database):
+   sudo apt install mysql-server -y
+   
+
+5. Enable and Start Apache to ensure the web server runs after reboot:
+   sudo systemctl enable apache2
+   sudo systemctl start apache2
+   
+
+
+
+Step 4: Configure MySQL
+Now, you need to configure MySQL for WordPress by creating a WordPress database and user.
+
+1. Login to MySQL as the root user:
+   sudo mysql -u root
+   
+
+2. Create a new WordPress database and user:
+   sudo mysql -u root
+   ALTER USER 'wpuser'@'localhost' IDENTIFIED WITH mysql_native_password BY 'Password@123';
+   CREATE USER 'wpuser'@'localhost' IDENTIFIED BY 'Password@123';
+   CREATE DATABASE wordpress;
+   GRANT ALL PRIVILEGES ON wordpress.* TO 'wpuser'@'localhost';
+   EXIT;
+   
+
+   In this configuration:
+   - The database name is `wordpress`.
+   - The username is `wpuser` with a password of `Password@123` (you can change the password as needed).
+
+
+
+Step 5: Install and Configure WordPress
+Next, you will download and configure WordPress.
+
+1. Download WordPress to the `/tmp` directory:
+   cd /tmp
+   sudo wget https://wordpress.org/latest.tar.gz
+   
+
+2. Extract the WordPress archive:
+   sudo tar -xvzf latest.tar.gz
+   
+
+3. Move the WordPress files to the Apache web root:
+   sudo mv wordpress/ /var/www/html
+   
+
+4. Restart Apache to apply the changes:
+   sudo systemctl restart apache2
+   
+
+
+
+Step 6: Access WordPress
+After setting up WordPress, you can complete the installation and configuration via the browser.
+
+1. Open your browser and navigate to:
+   
+   http://<instance_public_ip>
+   
+   Replace `<instance_public_ip>` with the actual public IP address of your EC2 instance.
+
+2. Complete the WordPress Installation:
+   - Select your language.
+   - Enter your site title, admin username, password, and email.
+   - Click Install WordPress.
+
+
+3. Login to the WordPress Admin:
+   After installation, log in to the WordPress admin panel:
+   
+   http://<instance_public_ip>/wp-admin
+   
+   Enter the admin username and password you set during installation.
+
+
+
+Step 7: Create "Welcome" Page and Set as Homepage
+1. Create a New Page:
+   - From the WordPress Admin Dashboard, go to Pages → Add New.
+   - Title the page Welcome.
+   - Publish the page.
+
+2. Set the "Welcome" Page as Homepage:
+   - Go to Settings → Reading.
+   - Under "Your homepage displays", select A static page.
+   - Choose Welcome as the homepage.
+   - Save the changes.
+
+Now, the "Welcome" page will be the homepage of your WordPress site.
+
+
+
+Step 8:Take a Screenshot on your local machine:
+
+Step 9:Login to the Github and create a repository
+
+Step 10: Clone the Repository Using Git Bash
+
+    - Login to your Gitbash 
+    - Clone the repository
+      Command: git clone <repository URL>
+    -copy repository URL from your GitHub account
+
+Step 11: Navigate into the Repository
+      Command: cd <repository name>
+
+Step 12: Copy screenshots inside the repository from your local desktop by either using command line or desktop copy option
+
+Step 13: Stage the Screenshot for Commit
+     Command : git add .
+
+Step 14: Commit and Push the Screenshot to GitHub
+   Command: git commit -m "Added WordPress homepage screenshot"
+            git push origin main
+
+Step 15: Refresh the GitHub page and check the screenshots
+         
